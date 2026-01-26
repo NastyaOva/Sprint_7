@@ -14,6 +14,7 @@ public class CreateCourierNegativeTest extends BaseApiTest {
     @DisplayName("Проверка ошибки создания двух одинаковых курьеров")
     public void conflictCreateDuplicateCourier() {
         CourierModel courierModel = TestCourierData.generationCourier();
+        CourierStep.createCourier(courierModel);
         Response response = CourierStep.createCourier(courierModel);
         this.courierCash = courierModel;
         CourierStep.checkErrorMessage(response, HTTP_CONFLICT, "Этот логин уже используется. Попробуйте другой.");
