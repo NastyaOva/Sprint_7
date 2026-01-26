@@ -5,8 +5,7 @@ import models.CourierModel;
 import io.restassured.response.Response;
 
 import static constants.UrlPath.*;
-import static io.restassured.RestAssured.given;
-import static java.net.HttpURLConnection.HTTP_OK;
+import static io.restassured.RestAssured.given;;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -23,8 +22,8 @@ public class CourierStep {
         return response;
     }
 
-    @Step("Проверка кода и тела ответа успешного создания курьера")
-    public static void checkResponseCreateCourier(Response response, int code) {
+    @Step("Проверка кода и тела ответа успешного создания/удаления курьера")
+    public static void checkResponseCourier(Response response, int code) {
         response.then()
                 .log().all()
                 .statusCode(code)
@@ -39,33 +38,23 @@ public class CourierStep {
                 .body("message", equalTo(expectedText));
     }
 
-    @Step("Вывод тела ответа при создании курьера")
-    public static void printResponseCreateCourier(CourierModel courierModel) {
-        System.out.println(createCourier(courierModel).body().asString());
-    }
-
     @Step("Авторизация курьера")
     public static Response loginCourier(CourierModel courierModel) {
-        Response responseLogin = given()
+        Response response = given()
                 .log().all()
                 .header("Content-type", "application/json")
                 .body(courierModel)
                 .when()
                 .post(LOGIN_PATH_COURIER);
-        return responseLogin;
+        return response;
     }
 
     @Step("Проверка кода и получение id курьера в теле ответа при успешной авторизации курьера")
-    public static void checkResponseLoginCourier(Response responseLogin, int code) {
-        responseLogin.then()
+    public static void checkResponseLoginCourier(Response response, int code) {
+        response.then()
                 .log().all()
                 .statusCode(code)
                 .assertThat().body("id", notNullValue());
-    }
-
-    @Step("Вывод тела ответа при авторизации курьера")
-    public static void printResponseLoginCourier(CourierModel courierModel) {
-        System.out.println(loginCourier(courierModel).body().asString());
     }
 
     @Step("Получение id курьера")
@@ -75,13 +64,33 @@ public class CourierStep {
     }
 
     @Step("Удаление курьера")
-    public static void deleteCourier(CourierModel courierModel) {
-        given()
+    public static Response deleteCourier(CourierModel courierModel) {
+       Response response = given()
                 .log().all()
                 .pathParam("id", getCourierId(courierModel))
-                .delete(DELETE_PATH_COURIER)
-                .then()
-                .statusCode(HTTP_OK);
-        System.out.println("Курьер удален");
+                .delete(DELETE_PATH_COURIER);
+        return response;
+    }
+
+    @Step("Удаление курьера без id")
+    public static Response deleteCourierWithoutId() {
+        Response response = given()
+                .log().all()
+                .delete(DELETE_PATH_COURIER_WITHOUT_ID);
+        return response;
+    }
+
+    @Step("Удаление курьера с несуществующим id")
+    public static Response deleteCourierWithWrongId() {
+        Response response = given()
+                .log().all()
+                .pathParam("id", "0000")
+                .delete(DELETE_PATH_COURIER);
+        return response;
+    }
+
+    @Step("Вывод тела ответа")
+    public static void printResponseCourier(Response response) {
+        System.out.println(response.body().asString());
     }
 }

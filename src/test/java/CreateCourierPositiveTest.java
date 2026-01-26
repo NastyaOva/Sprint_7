@@ -14,8 +14,8 @@ public class CreateCourierPositiveTest extends BaseApiTest {
     public void createCourierTest() {
         CourierModel courierModel = TestCourierData.generationCourier();
         Response response = CourierStep.createCourier(courierModel);
-        CourierStep.checkResponseCreateCourier(response, HTTP_CREATED);
-        CourierStep.printResponseCreateCourier(courierModel);
+        CourierStep.checkResponseCourier(response, HTTP_CREATED);
+        CourierStep.printResponseCourier(response);
         this.courierCash = courierModel;
     }
 
@@ -24,8 +24,8 @@ public class CreateCourierPositiveTest extends BaseApiTest {
     public void createCourierWithoutFirstname() {
         CourierModel courierModel = TestCourierData.generationCourierWithoutFirstname();
         Response response = CourierStep.createCourier(courierModel);
-        CourierStep.checkResponseCreateCourier(response, HTTP_CREATED);
-        CourierStep.printResponseCreateCourier(courierModel);
+        CourierStep.checkResponseCourier(response, HTTP_CREATED);
+        CourierStep.printResponseCourier(response);
         this.courierCash = courierModel;
     }
 }

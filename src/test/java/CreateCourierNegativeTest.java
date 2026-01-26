@@ -18,7 +18,7 @@ public class CreateCourierNegativeTest extends BaseApiTest {
         Response response = CourierStep.createCourier(courierModel);
         this.courierCash = courierModel;
         CourierStep.checkErrorMessage(response, HTTP_CONFLICT, "Этот логин уже используется. Попробуйте другой.");
-        CourierStep.printResponseCreateCourier(courierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class CreateCourierNegativeTest extends BaseApiTest {
         CourierModel courierModel = TestCourierData.generationCourierWithoutLogin();
         Response response = CourierStep.createCourier(courierModel);
         CourierStep.checkErrorMessage(response, HTTP_BAD_REQUEST, "Недостаточно данных для создания учетной записи");
-        CourierStep.printResponseCreateCourier(courierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class CreateCourierNegativeTest extends BaseApiTest {
         CourierModel courierModel = TestCourierData.generationCourierWithoutPassword();
         Response response = CourierStep.createCourier(courierModel);
         CourierStep.checkErrorMessage(response, HTTP_BAD_REQUEST, "Недостаточно данных для создания учетной записи");
-        CourierStep.printResponseCreateCourier(courierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -48,6 +48,6 @@ public class CreateCourierNegativeTest extends BaseApiTest {
         CourierModel secondCourierModel = TestCourierData.generationCourierWithExistingLogin(firstCourierModel.getLogin());
         Response response = CourierStep.createCourier(secondCourierModel);
         CourierStep.checkErrorMessage(response, HTTP_CONFLICT, "Этот логин уже используется. Попробуйте другой.");
-        CourierStep.printResponseCreateCourier(secondCourierModel);
+        CourierStep.printResponseCourier(response);
     }
 }

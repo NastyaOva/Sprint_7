@@ -8,7 +8,6 @@ import org.junit.runners.Parameterized;
 import steps.OrderStep;
 
 import static java.net.HttpURLConnection.HTTP_CREATED;
-import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(Parameterized.class)
 public class CreateOrderPositiveTest extends BaseApiTest{
@@ -33,7 +32,7 @@ public class CreateOrderPositiveTest extends BaseApiTest{
         OrderModel orderModel = TestOrderData.orderScooter(colorScooter);
         Response response = OrderStep.createOrder(orderModel);
         OrderStep.checkResponseCreateOrder(response, HTTP_CREATED);
-        OrderStep.printResponseCreateOrder(orderModel);
+        OrderStep.printResponseOrder(response);
         this.orderCash = orderModel;
     }
 
@@ -43,7 +42,7 @@ public class CreateOrderPositiveTest extends BaseApiTest{
         OrderModel orderModel = TestOrderData.orderBlackAndGrayScooter();
         Response response = OrderStep.createOrder(orderModel);
         OrderStep.checkResponseCreateOrder(response, HTTP_CREATED);
-        OrderStep.printResponseCreateOrder(orderModel);
+        OrderStep.printResponseOrder(response);
         this.orderCash = orderModel;
     }
 }

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import static constants.UrlPath.GET_PATH_ORDER;
 import static io.restassured.RestAssured.given;
-import static java.net.HttpURLConnection.HTTP_OK;
 
 public class OrderListStep {
 

@@ -4,8 +4,7 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import models.OrderModel;
 
-import static constants.UrlPath.CANCEL_PATH_ORDER;
-import static constants.UrlPath.CREATE_PATH_ORDER;
+import static constants.UrlPath.*;
 import static io.restassured.RestAssured.given;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.hamcrest.Matchers.notNullValue;
@@ -31,9 +30,9 @@ public class OrderStep {
                 .assertThat().body("track", notNullValue());
     }
 
-    @Step("Вывод тела ответа при создании заказа")
-    public static void printResponseCreateOrder(OrderModel orderModel) {
-        System.out.println(createOrder(orderModel).body().asString());
+    @Step("Вывод тела ответа")
+    public static void printResponseOrder(Response response) {
+        System.out.println(response.body().asString());
     }
 
     @Step("Отмена заказа")
@@ -45,6 +44,5 @@ public class OrderStep {
                 .put(CANCEL_PATH_ORDER)
                 .then()
                 .statusCode(HTTP_OK);
-        System.out.println("Заказ отменен");
     }
 }

@@ -7,16 +7,15 @@ import steps.CourierStep;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
-public class LoginCourierPositiveTest extends BaseApiTest{
+public class DeleteCourierPositiveTest extends BaseApiTest{
 
     @Test
-    @DisplayName("Проверка авторизации курьера")
-    public void successLoginCourier() {
+    @DisplayName("Проверка удаления курьера")
+    public void successDeleteCourierTest() {
         CourierModel courierModel = TestCourierData.generationCourier();
         CourierStep.createCourier(courierModel);
-        this.courierCash = courierModel;
-        Response response = CourierStep.loginCourier(courierModel);
-        CourierStep.checkResponseLoginCourier(response, HTTP_OK);
+        Response response = CourierStep.deleteCourier(courierModel);
+        CourierStep.checkResponseCourier(response, HTTP_OK);
         CourierStep.printResponseCourier(response);
     }
 }

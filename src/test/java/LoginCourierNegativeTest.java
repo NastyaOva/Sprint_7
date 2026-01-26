@@ -16,7 +16,7 @@ public class LoginCourierNegativeTest extends BaseApiTest{
         CourierModel courierModel = TestCourierData.generationCourier();
         Response response = CourierStep.loginCourier(courierModel);
         CourierStep.checkErrorMessage(response, HTTP_NOT_FOUND, "Учетная запись не найдена");
-        CourierStep.printResponseLoginCourier(courierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class LoginCourierNegativeTest extends BaseApiTest{
         CourierModel copyCourierModel = TestCourierData.generationCourierWithExistingPassword(courierModel.getPassword());
         Response response = CourierStep.loginCourier(copyCourierModel);
         CourierStep.checkErrorMessage(response, HTTP_NOT_FOUND, "Учетная запись не найдена");
-        CourierStep.printResponseLoginCourier(copyCourierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class LoginCourierNegativeTest extends BaseApiTest{
         CourierModel copyCourierModel = TestCourierData.generationCourierWithExistingLogin(courierModel.getLogin());
         Response response = CourierStep.loginCourier(copyCourierModel);
         CourierStep.checkErrorMessage(response, HTTP_NOT_FOUND, "Учетная запись не найдена");
-        CourierStep.printResponseLoginCourier(copyCourierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class LoginCourierNegativeTest extends BaseApiTest{
         CourierModel copyCourierModel = TestCourierData.generationExistingCourierWithoutPassword(courierModel.getLogin(), courierModel.getFirstName());
         Response response = CourierStep.loginCourier(copyCourierModel);
         CourierStep.checkErrorMessage(response, HTTP_BAD_REQUEST, "Недостаточно данных для входа");
-        CourierStep.printResponseLoginCourier(copyCourierModel);
+        CourierStep.printResponseCourier(response);
     }
 
     @Test
@@ -60,6 +60,6 @@ public class LoginCourierNegativeTest extends BaseApiTest{
         CourierModel copyCourierModel = TestCourierData.generationExistingCourierWithoutLogin(courierModel.getPassword(), courierModel.getFirstName());
         Response response = CourierStep.loginCourier(copyCourierModel);
         CourierStep.checkErrorMessage(response, HTTP_BAD_REQUEST, "Недостаточно данных для входа");
-        CourierStep.printResponseLoginCourier(copyCourierModel);
+        CourierStep.printResponseCourier(response);
     }
 }

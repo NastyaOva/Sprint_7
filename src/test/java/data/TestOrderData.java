@@ -1,6 +1,7 @@
 package data;
 
 import com.github.javafaker.Faker;
+import io.qameta.allure.Step;
 import models.OrderModel;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public class TestOrderData {
 
     static Faker order = new Faker();
 
-    //создание заказа
+    @Step("Создание заказа")
     public static OrderModel orderScooter(String colorScooter) {
         String firstName = order.name().firstName();
         String lastName = order.name().lastName();
@@ -26,7 +27,7 @@ public class TestOrderData {
         return new OrderModel(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
     }
 
-    //создание заказа с выбором обоих цветов
+    @Step("Создание заказа с выбором обоих цветов")
     public static OrderModel orderBlackAndGrayScooter() {
         String firstName = order.name().firstName();
         String lastName = order.name().lastName();
