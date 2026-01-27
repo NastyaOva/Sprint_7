@@ -11,40 +11,31 @@ import steps.CourierStep;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class TestOrderListData {
 
-    static Faker list = new Faker();
+    static Faker list = new Faker(new Locale("ru"));
     static ObjectMapper mapper = new ObjectMapper();
 
+    public static OrderListModel orderList(Integer courierId, String nearestStation, Integer limit, Integer page) {
+        return new OrderListModel(courierId, nearestStation, limit, page);
+    }
+
     @Step("Генерация параметров для получения списка активных/завершенных заказов курьера")
-    public static OrderListModel listDataById() {
+    public static OrderListModel listDataById() throws JsonProcessingException {
         CourierModel courier = TestCourierData.generationCourier();
         Response id = CourierStep.loginCourier(courier);
         Integer courierId = id.path("id");
-        return new OrderListModel(courierId, null, null, null);
-    }
-
-    @Step("Генерация параметров для получения списка активных/завершенных заказов курьера на двух из предложенных станций")
-    public static OrderListModel listDataByIdAndStation() throws JsonProcessingException {
-        CourierModel courier = TestCourierData.generationCourier();
-        Response id = CourierStep.loginCourier(courier);
-        Integer courierId = id.path("id");
-        return new OrderListModel(courierId, twoStation(), null, null);
-    }
-
-    @Step("Генерация заказов в кол-ве limit, доступных для взятия курьером")
-    public static OrderListModel listDataWithLimit() {
         Integer limit = list.number().numberBetween(1, 31);
         Integer page = 0;
-        return new OrderListModel(null, null, limit, page);
-    }
-
-    @Step("Генерация заказов в кол-ве limit, доступных для взятия курьером возле определенной станции метро")
-    public static OrderListModel listDataWithLimitAndStation() throws JsonProcessingException {
-        Integer limit = list.number().numberBetween(1, 31);
-        Integer page = 0;
-        return new OrderListModel(null, oneStation(), limit, page);
+        String nearestStation;
+        if (courierId == null) {
+            nearestStation = oneStation();
+        } else {
+            nearestStation = twoStation();
+        }
+        return new OrderListModel(courierId, nearestStation, limit, page);
     }
 
     @Step("Генерация одного номера станции метро")

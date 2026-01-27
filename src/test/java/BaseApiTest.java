@@ -1,5 +1,4 @@
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import models.CourierModel;
 import models.OrderModel;
 import org.junit.After;

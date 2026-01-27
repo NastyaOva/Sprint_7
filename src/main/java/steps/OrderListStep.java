@@ -27,13 +27,12 @@ public class OrderListStep {
         if (orderListModel.getPage() != null) {
             map.put("page", orderListModel.getPage());
         }
-        Response response = given()
+        return given()
                 .log().all()
                 .queryParams(map)
                 .get(GET_PATH_ORDER)
                 .then()
                 .extract().response();
-        return response;
     }
 
     @Step("Проверка кода при запросе на получение списка заказов")
@@ -41,10 +40,5 @@ public class OrderListStep {
         response.then()
                 .log().all()
                 .statusCode(code);
-    }
-
-    @Step("Вывод тела ответа при получении списка заказов")
-    public static void printResponseGetOrderList(OrderListModel orderListModel) {
-        System.out.println(getOrderList(orderListModel).body().asString());
     }
 }

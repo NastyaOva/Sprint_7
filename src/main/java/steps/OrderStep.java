@@ -13,13 +13,12 @@ public class OrderStep {
 
     @Step("Создание заказа")
     public static Response createOrder(OrderModel orderModel) {
-        Response response = given()
+        return given()
                 .log().all()
                 .header("Content-type", "application/json")
                 .body(orderModel)
                 .when()
                 .post(CREATE_PATH_ORDER);
-        return response;
     }
 
     @Step("Проверка кода и получение track заказа в теле ответа при успешном создании заказа")
@@ -28,11 +27,6 @@ public class OrderStep {
                 .log().all()
                 .statusCode(code)
                 .assertThat().body("track", notNullValue());
-    }
-
-    @Step("Вывод тела ответа")
-    public static void printResponseOrder(Response response) {
-        System.out.println(response.body().asString());
     }
 
     @Step("Отмена заказа")

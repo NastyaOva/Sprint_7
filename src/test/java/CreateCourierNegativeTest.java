@@ -1,4 +1,5 @@
 import data.TestCourierData;
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import models.CourierModel;
@@ -12,42 +13,45 @@ public class CreateCourierNegativeTest extends BaseApiTest {
 
     @Test
     @DisplayName("Проверка ошибки создания двух одинаковых курьеров")
-    public void conflictCreateDuplicateCourier() {
+    @Description("Проверка кода и тела ответа при попытке создать курьера, с параметрами которого уже существует другой курьер")
+    public void conflictCreateDuplicateCourierTest() {
         CourierModel courierModel = TestCourierData.generationCourier();
         CourierStep.createCourier(courierModel);
         Response response = CourierStep.createCourier(courierModel);
         this.courierCash = courierModel;
         CourierStep.checkErrorMessage(response, HTTP_CONFLICT, "Этот логин уже используется. Попробуйте другой.");
-        CourierStep.printResponseCourier(response);
     }
 
     @Test
     @DisplayName("Проверка ошибки создания курьера без ввода логина")
-    public void errorCreateWithoutLoginCourier() {
-        CourierModel courierModel = TestCourierData.generationCourierWithoutLogin();
+    @Description("Проверка кода и тела ответа при попытке создать курьера без указания его логина в теле запроса")
+    public void errorCreateWithoutLoginCourierTest() {
+        CourierModel courierModel = TestCourierData.generationCourier();
+        courierModel.setLogin(null);
         Response response = CourierStep.createCourier(courierModel);
         CourierStep.checkErrorMessage(response, HTTP_BAD_REQUEST, "Недостаточно данных для создания учетной записи");
-        CourierStep.printResponseCourier(response);
     }
 
     @Test
     @DisplayName("Проверка ошибки создания курьера без ввода пароля")
-    public void errorCreateWithoutPasswordCourier() {
-        CourierModel courierModel = TestCourierData.generationCourierWithoutPassword();
+    @Description("Проверка кода и тела ответа при попытке создать курьера без указания пароля в теле запроса")
+    public void errorCreateWithoutPasswordCourierTest() {
+        CourierModel courierModel = TestCourierData.generationCourier();
+        courierModel.setPassword(null);
         Response response = CourierStep.createCourier(courierModel);
         CourierStep.checkErrorMessage(response, HTTP_BAD_REQUEST, "Недостаточно данных для создания учетной записи");
-        CourierStep.printResponseCourier(response);
     }
 
     @Test
     @DisplayName("Проверка ошибки создания курьера с логином, который уже используется")
-    public void conflictCreateDuplicateLoginCourier() {
+    @Description("Проверка кода и тела ответа при попытке создать курьера с логином, который уже используется")
+    public void conflictCreateDuplicateLoginCourierTest() {
         CourierModel firstCourierModel = TestCourierData.generationCourier();
         CourierStep.createCourier(firstCourierModel);
         this.courierCash = firstCourierModel;
-        CourierModel secondCourierModel = TestCourierData.generationCourierWithExistingLogin(firstCourierModel.getLogin());
+        CourierModel secondCourierModel = TestCourierData.generationCourier();
+        secondCourierModel.setLogin(firstCourierModel.getLogin());
         Response response = CourierStep.createCourier(secondCourierModel);
         CourierStep.checkErrorMessage(response, HTTP_CONFLICT, "Этот логин уже используется. Попробуйте другой.");
-        CourierStep.printResponseCourier(response);
     }
 }

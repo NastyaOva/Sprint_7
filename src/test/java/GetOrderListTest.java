@@ -1,4 +1,5 @@
 import data.TestOrderListData;
+import io.qameta.allure.Description;
 import io.qameta.allure.internal.shadowed.jackson.core.JsonProcessingException;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
@@ -12,37 +13,45 @@ public class GetOrderListTest extends BaseApiTest {
 
     @Test
     @DisplayName("Получение списка всех активных/завершенных заказов курьера")
-    public void getListOrderById() {
+    @Description("Проверка кода и тела ответа при получении списка заказов с указанием id курьера в запросе")
+    public void getListOrderByIdTest() throws JsonProcessingException {
         OrderListModel orderListModel = TestOrderListData.listDataById();
+        orderListModel.setNearestStation(null);
+        orderListModel.setLimit(null);
+        orderListModel.setPage(null);
         Response response = OrderListStep.getOrderList(orderListModel);
         OrderListStep.checkCodeResponseGetOrderList(response, HTTP_OK);
-        OrderListStep.printResponseGetOrderList(orderListModel);
     }
 
     @Test
     @DisplayName("Получение списка всех активных/завершенных заказов курьера на одной из двух станций метро")
-    public void getListDataByIdAndStation() throws JsonProcessingException {
-        OrderListModel orderListModel = TestOrderListData.listDataByIdAndStation();
+    @Description("Проверка кода и тела ответа при получении списка заказов с указанием id курьера и фильтра станций метро в запросе")
+    public void getListDataByIdAndStationTest() throws JsonProcessingException {
+        OrderListModel orderListModel = TestOrderListData.listDataById();
+        orderListModel.setLimit(null);
+        orderListModel.setPage(null);
         Response response = OrderListStep.getOrderList(orderListModel);
         OrderListStep.checkCodeResponseGetOrderList(response, HTTP_OK);
-        OrderListStep.printResponseGetOrderList(orderListModel);
     }
 
     @Test
     @DisplayName("Получение списка ограниченного кол-ва заказов, доступных для взятия курьером")
-    public void getListDataWithLimit() {
-        OrderListModel orderListModel = TestOrderListData.listDataWithLimit();
+    @Description("Проверка кода и тела ответа при получении списка заказов с указанием кол-ва заказов доступных для взятия курьером и номера текущей страницы в запросе")
+    public void getListDataWithLimitTest() throws JsonProcessingException {
+        OrderListModel orderListModel = TestOrderListData.listDataById();
+        orderListModel.setCourierId(null);
+        orderListModel.setNearestStation(null);
         Response response = OrderListStep.getOrderList(orderListModel);
         OrderListStep.checkCodeResponseGetOrderList(response, HTTP_OK);
-        OrderListStep.printResponseGetOrderList(orderListModel);
     }
 
     @Test
     @DisplayName("Получение списка ограниченного кол-ва заказов, доступных для взятия курьером возле определенной станции метро")
-    public void getListDataWithLimitAndStation() throws JsonProcessingException {
-    OrderListModel orderListModel = TestOrderListData.listDataWithLimitAndStation();
+    @Description("Проверка кода и тела ответа при получении списка заказов с указанием в запросе номера текущей страницы и кол-ва заказов доступных для взятия курьером возле определенной станции метро")
+    public void getListDataWithLimitAndStationTest() throws JsonProcessingException {
+        OrderListModel orderListModel = TestOrderListData.listDataById();
+        orderListModel.setCourierId(null);
         Response response = OrderListStep.getOrderList(orderListModel);
         OrderListStep.checkCodeResponseGetOrderList(response, HTTP_OK);
-        OrderListStep.printResponseGetOrderList(orderListModel);
     }
 }
